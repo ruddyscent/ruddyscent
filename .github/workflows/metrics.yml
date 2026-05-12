@@ -22,6 +22,7 @@ jobs:
           user: ruddyscent
           template: classic
           base: header, activity, community, repositories, metadata
+          config_display: large
           config_timezone: Asia/Seoul
           filename: github-metrics.svg
 
@@ -29,3 +30,10 @@ jobs:
           plugin_languages_ignored: html, css
           plugin_languages_sections: most-used
           plugin_languages_limit: 8
+          plugin_languages_details: bytes-size, percentage
+
+          plugin_isocalendar: yes
+          plugin_achievements: yes
+          plugin_achievements_threshold: C
+          plugin_stars: yes
+          plugin_followup: yes
