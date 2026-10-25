@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import hashlib
+import shutil
 import subprocess
 import sys
 
@@ -36,6 +37,13 @@ digest = hashlib.sha256(content.encode()).hexdigest()
     "257392f90340f916cb8b815026f259399f6b246d3eb7de38b58bfe7a07bd5b65\n"
     f'RUN echo "{digest}  /metrics/source/app/action/index.mjs" | sha256sum -c -\n'
     "COPY source/app/action/index.mjs /metrics/source/app/action/index.mjs\n"
+    "COPY metrics-array-diagnostics.cjs /metrics/metrics-array-diagnostics.cjs\n"
+    "RUN find /metrics/source /metrics/node_modules -type f -print > /metrics/metrics-module-paths.txt\n"
+    'ENTRYPOINT ["node", "--require", "/metrics/metrics-array-diagnostics.cjs", "/metrics/source/app/action/index.mjs"]\n'
+)
+shutil.copyfile(
+    Path(__file__).with_name("metrics-array-diagnostics.cjs"),
+    source / "metrics-array-diagnostics.cjs",
 )
 
 # The composite action creates .env before building. Send only the patched file.
@@ -43,5 +51,5 @@ dockerignore = source / ".dockerignore"
 dockerignore.write_text(
     "*\n!Dockerfile\n!source/\nsource/*\n!source/app/\nsource/app/*\n"
     "!source/app/action/\nsource/app/action/*\n"
-    "!source/app/action/index.mjs\n.env\n.git\n"
+    "!source/app/action/index.mjs\n!metrics-array-diagnostics.cjs\n.env\n.git\n"
 )
