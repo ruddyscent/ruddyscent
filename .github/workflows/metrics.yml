@@ -25,7 +25,7 @@ jobs:
           ref: 65836723097537a54cd8eb90f61839426b4266b6
           path: .metrics-action
           persist-credentials: false
-      - name: Prepare private-safe allocation diagnostic
+      - name: Prepare private allocation profile
         run: python3 .github/scripts/prepare-metrics-action.py .metrics-action
       - name: Generate metrics
         uses: ./.metrics-action
